@@ -35,6 +35,7 @@ type MessageStore interface {
 }
 
 type CacheRepository interface {
+	Exists(ctx context.Context, key string) (bool, error)
 	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error
 	GetMessages(ctx context.Context) ([]cache.SentMessage, error)
 	Del(ctx context.Context, key string) error
@@ -86,7 +87,7 @@ func (s *MessageService) process() error {
 		}
 		err = txS.Commit()
 		if err != nil {
-			slog.Error("failed to StatusSending commit transaction", slog.Any("error", err))
+			return fmt.Errorf("failed to StatusSending commit transaction: %w", err)
 		}
 
 		tx, err := s.Store.UpdateStatus(ctx, msg.ID, repository.StatusSent)

@@ -22,26 +22,17 @@ func NewWorker(r *cache.Repository, s *repository.PostgreStore) *Worker {
 }
 
 func (w *Worker) Run(ctx context.Context) error {
-	redisMessages, err := w.redis.GetMessages(ctx)
-	if err != nil {
-		return err
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
 	dbMessages, err := w.store.GetSendingMessages(ctx)
 	if err != nil {
 		return err
 	}
 
-	redisMap := make(map[string]struct{}, len(redisMessages))
-	for _, m := range redisMessages {
-		redisMap[m.MessageID] = struct{}{}
-	}
-
 	for _, dbMsg := range dbMessages {
-		if _, ok := redisMap[dbMsg.ID]; ok {
+		exists, err := w.redis.Exists(ctx, "sent_message:"+dbMsg.ID)
+		if err != nil {
+			return err
+		}
+		if exists {
 			continue
 		}
 
@@ -53,7 +44,6 @@ func (w *Worker) Run(ctx context.Context) error {
 			CreatedAt:   dbMsg.CreatedAt,
 			SentAt:      time.Now(),
 		}
-
 		data, err := json.Marshal(msg)
 		if err != nil {
 			return err

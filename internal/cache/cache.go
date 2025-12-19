@@ -42,6 +42,17 @@ func (r *Repository) Connect() error {
 	return nil
 }
 
+func (r *Repository) Exists(ctx context.Context, key string) (bool, error) {
+	_, err := r.redis.Get(ctx, key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}
+
 func (r *Repository) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
 	return r.redis.Set(ctx, key, value, expiration).Err()
 }
