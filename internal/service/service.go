@@ -80,13 +80,13 @@ func (s *MessageService) process() error {
 			slog.Error("failed to send message to webhook", slog.Any("error", err))
 			err = txS.Rollback()
 			if err != nil {
-				slog.Error("failed to rollback transaction", slog.Any("error", err))
+				return fmt.Errorf("failed to StatusSending rollback transaction: %w", err)
 			}
 			continue
 		}
 		err = txS.Commit()
 		if err != nil {
-			slog.Error("failed to commit transaction", slog.Any("error", err))
+			slog.Error("failed to StatusSending commit transaction", slog.Any("error", err))
 		}
 
 		tx, err := s.Store.UpdateStatus(ctx, msg.ID, repository.StatusSent)
@@ -111,12 +111,16 @@ func (s *MessageService) process() error {
 
 		if err = s.Cache.Set(ctx, "sent_message:"+msg.ID, data, 0); err != nil {
 			// Cache write failures are tolerated.
-			// The worker periodically syncs state from the database, ensuring consistency.
+			// The worker periodically syncs sending state from the database, ensuring consistency.
 			slog.Error("failed to cache message", slog.Any("error", err))
+			err = tx.Rollback()
+			if err != nil {
+				return fmt.Errorf("failed to StatusSent rollback transaction: %w", err)
+			}
 		}
 		err = tx.Commit()
 		if err != nil {
-			slog.Error("failed to commit StatusSent", slog.Any("error", err))
+			return fmt.Errorf("failed to StatusSent commit transaction: %w", err)
 		}
 		slog.Info(
 			"message sent successfully",
