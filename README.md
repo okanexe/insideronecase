@@ -11,11 +11,11 @@ It supports background workers for message delivery, API-based control (start/st
 ├── docs/               # Swagger generated files
 ├── internal/
 │   ├── cache/          # Redis client wrapper
-│   ├── migrations/     # SQL migrations
 │   ├── repository/     # PostgreSQL access layer
 │   ├── service/        # Business logic
 │   ├── webhook/        # External webhook client
 │   └── worker/         # Background worker
+├── migrations/         # SQL migrations
 ├── docker-compose.yml
 ├── go.mod
 └── README.md
