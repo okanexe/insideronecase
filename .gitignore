@@ -1,0 +1,58 @@
+# === Go ===
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Go workspace
+/go.work
+/go.work.sum
+
+# Build output
+/bin/
+/build/
+/dist/
+
+# === Go cache ===
+*.out
+*.log
+/tmp/
+
+# === Environment files ===
+.env
+.env.*
+!.env.example
+
+# === Docker ===
+docker-compose.override.yml
+
+# === Swagger / OpenAPI ===
+swagger.json
+swagger.yaml
+docs/swagger/
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Database ===
+*.db
+*.sqlite
+*.sqlite3
+
+# === Migrate ===
+*.bak
+
+# === Redis dump ===
+dump.rdb
