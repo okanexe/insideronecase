@@ -1,0 +1,114 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for automatically sending messages.",
+        "title": "Message Sender API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/messages": {
+            "get": {
+                "description": "Returns list of sent messages",
+                "summary": "Get sent messages",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/repository.Message"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/start": {
+            "post": {
+                "description": "Starts the background worker that sends messages",
+                "summary": "Start message sending worker",
+                "responses": {
+                    "200": {
+                        "description": "Message sending started",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/stop": {
+            "post": {
+                "description": "Stops the background worker",
+                "summary": "Stop message sending worker",
+                "responses": {
+                    "200": {
+                        "description": "Message sending stopped",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "repository.Message": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "sent_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/repository.MessageStatus"
+                }
+            }
+        },
+        "repository.MessageStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "sending",
+                "sent"
+            ],
+            "x-enum-varnames": [
+                "StatusPending",
+                "StatusSending",
+                "StatusSent"
+            ]
+        }
+    }
+}

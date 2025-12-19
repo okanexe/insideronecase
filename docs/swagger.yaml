@@ -1,0 +1,76 @@
+basePath: /
+definitions:
+  repository.Message:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      phone_number:
+        type: string
+      sent_at:
+        type: string
+      status:
+        $ref: '#/definitions/repository.MessageStatus'
+    type: object
+  repository.MessageStatus:
+    enum:
+    - pending
+    - sending
+    - sent
+    type: string
+    x-enum-varnames:
+    - StatusPending
+    - StatusSending
+    - StatusSent
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for automatically sending messages.
+  title: Message Sender API
+  version: "1.0"
+paths:
+  /messages:
+    get:
+      description: Returns list of sent messages
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/repository.Message'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get sent messages
+  /start:
+    post:
+      description: Starts the background worker that sends messages
+      responses:
+        "200":
+          description: Message sending started
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Start message sending worker
+  /stop:
+    post:
+      description: Stops the background worker
+      responses:
+        "200":
+          description: Message sending stopped
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Stop message sending worker
+swagger: "2.0"

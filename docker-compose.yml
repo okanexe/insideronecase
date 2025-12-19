@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: go-app
+    environment:
+      - POSTGRES_URL=postgres://postgres:1234@db:5432/mydb?sslmode=disable
+      - REDIS_ADDR=redis:6379
+      - WEBHOOK_URL=https://webhook.site/b51c6e5f-a347-4c6c-969e-db06878a7f6e
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  migrate:
+    image: migrate/migrate:v4.17.0
+    container_name: migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./internal/migrations:/migrations
+    command:
+      [
+        "-path", "/migrations",
+        "-database", "postgres://postgres:1234@db:5432/mydb?sslmode=disable",
+        "up"
+      ]
+    restart: "no"
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d mydb" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
