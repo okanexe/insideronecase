@@ -57,7 +57,7 @@ func (a *API) StopMessageSending(w http.ResponseWriter, r *http.Request) {
 // GetSentMessages godoc
 // @Summary Get sent messages
 // @Description Returns list of sent messages
-// @Success 200 {array} repository.Message
+// @Success 200 {array} cache.SentMessage
 // @Failure 500 {string} string
 // @Router /messages [get]
 func (a *API) GetSentMessages(w http.ResponseWriter, r *http.Request) {

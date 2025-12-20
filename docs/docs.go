@@ -25,7 +25,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/repository.Message"
+                                "$ref": "#/definitions/cache.SentMessage"
                             }
                         }
                     },
@@ -80,7 +80,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "repository.Message": {
+        "cache.SentMessage": {
             "type": "object",
             "properties": {
                 "content": {
@@ -89,10 +89,13 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
-                "id": {
+                "message_id": {
                     "type": "string"
                 },
                 "phone_number": {
+                    "type": "string"
+                },
+                "response_message_id": {
                     "type": "string"
                 },
                 "sent_at": {

@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_URL=postgres://postgres:1234@db:5432/mydb?sslmode=disable
       - REDIS_ADDR=redis:6379
-      - WEBHOOK_URL=https://webhook.site/b51c6e5f-a347-4c6c-969e-db06878a7f6e
+      - WEBHOOK_URL=https://webhook.site/801455dc-6eee-4508-9bce-62b7beb91b0e
     depends_on:
       migrate:
         condition: service_completed_successfully

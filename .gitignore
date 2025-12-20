@@ -31,11 +31,6 @@
 # === Docker ===
 docker-compose.override.yml
 
-# === Swagger / OpenAPI ===
-swagger.json
-swagger.yaml
-docs/swagger/
-
 # === IDE / Editor ===
 .vscode/
 .idea/

@@ -17,12 +17,6 @@ import (
 	"os"
 )
 
-//const (
-//	redisAddr  = "127.0.0.1:6379"
-//	postgreURL = "user=postgres password=1234 dbname=mydb sslmode=disable"
-//	webhookURL = "https://webhook.site/d90c7e79-8f22-4876-9f0b-5d9f2b20fb32"
-//)
-
 var (
 	redisAddr  = os.Getenv("REDIS_ADDR")
 	postgreURL = os.Getenv("POSTGRES_URL")

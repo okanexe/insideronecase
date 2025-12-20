@@ -133,7 +133,7 @@ func (s *MessageService) process() error {
 }
 
 func (s *MessageService) Run(ctx context.Context) {
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(2 * time.Minute)
 	defer ticker.Stop()
 	for {
 		select {

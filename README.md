@@ -68,7 +68,7 @@ http://localhost:8080/swagger/index.html
 
 ### Generate Swagger Docs
 ```bash
-swag init --dir cmd,api,internal/repository --output docs
+swag init --dir cmd,api,internal/cache,internal/repository --output docs
 ```
 
 ### Database Migrations

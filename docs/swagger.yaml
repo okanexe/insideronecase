@@ -1,14 +1,16 @@
 basePath: /
 definitions:
-  repository.Message:
+  cache.SentMessage:
     properties:
       content:
         type: string
       created_at:
         type: string
-      id:
+      message_id:
         type: string
       phone_number:
+        type: string
+      response_message_id:
         type: string
       sent_at:
         type: string
@@ -40,7 +42,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/repository.Message'
+              $ref: '#/definitions/cache.SentMessage'
             type: array
         "500":
           description: Internal Server Error
